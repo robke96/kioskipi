@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 DEV_MODE=true
-PROGRAM_DIR="/opt/kioskipi"
+PROGRAM_DIR="$HOME/kioskipi"
 
 INFO="🔵 \033[1;34m[INFO]\033[0m"
 SUCCESS="✅ \033[1;32m[SUCCESS]\033[0m"
@@ -21,10 +21,11 @@ error() {
 
 info "KioskiPI Started!"
 
+#no need anymore
 # check if program started in sudo
-if (( $(id -u) != 0 )); then
-    error "Program launched not in sudo"
-fi
+# if (( $(id -u) != 0 )); then
+#     error "Program launched not in sudo"
+# fi
 
 if [ $DEV_MODE = true ]; then
     if ! command -v go &>/dev/null; then
@@ -34,7 +35,6 @@ if [ $DEV_MODE = true ]; then
     go build -o kioskipi main.go 
     mkdir -p $PROGRAM_DIR
     mv kioskipi $PROGRAM_DIR
-else
     # get program from github releases
 fi
 
