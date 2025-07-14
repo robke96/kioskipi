@@ -9,7 +9,8 @@ import (
 )
 
 type Config struct {
-	Url string `json:"url"`
+	Url        string `json:"url"`
+	HideCursor bool   `json:"hidecursor"`
 }
 
 func Path() (string, error) {
@@ -58,7 +59,6 @@ func Get() Config {
 		fmt.Println(err)
 	}
 
-	fmt.Println("opened json")
 	var data Config
 
 	err = json.Unmarshal(jsonFile, &data)
@@ -67,4 +67,24 @@ func Get() Config {
 	}
 
 	return data
+}
+
+func Save(c *Config) {
+	json, err := json.Marshal(c)
+	if err != nil {
+		fmt.Println("error: ", err)
+		return
+	}
+
+	path, err := Path()
+	if err != nil {
+		fmt.Println("path error: ", err)
+		return
+	}
+
+	err = os.WriteFile(path, json, 0644)
+	if err != nil {
+		fmt.Println("path error: ", err)
+		return
+	}
 }

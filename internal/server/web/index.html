@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <div>
+            <h1>Configuration</h1>
+            <form method="post" action="/save">
+                <label>
+                    URL:
+                    <input type="url" name="url" value="{{.Url}}">
+                </label>
+                <div>
+                    <h2>Options</h2>
+                    <label>
+                       <input type="checkbox" name="hidecursor" {{if .HideCursor}}checked{{end}}>
+                        Hide Cursor
+                    </label>
+                </div>
+                <button type="submit">Save Settings</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
