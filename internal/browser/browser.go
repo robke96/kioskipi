@@ -15,7 +15,7 @@ type BrowserManager struct {
 var Manager *BrowserManager = &BrowserManager{}
 
 func (bm *BrowserManager) Start() {
-	url := config.Get().Url
+	configData := config.Get()
 	// url := "http://localhost:8080"
 
 	systemBrowser, _ := launcher.LookPath()
@@ -32,7 +32,16 @@ func (bm *BrowserManager) Start() {
 		MustLaunch()
 
 	bm.Browser = rod.New()
-	bm.Browser.ControlURL(u).MustConnect().NoDefaultDevice().MustPage(url).MustWaitLoad()
+	bm.Browser.ControlURL(u).MustConnect().NoDefaultDevice().MustPage(configData.Url).MustWaitLoad()
+
+	// hide cursor
+	if configData.HideCursor {
+		bm.Browser.MustPages().First().MustEval(`() => {
+			const style = document.createElement('style');
+			style.textContent = '* { cursor: none !important; }';
+			document.head.appendChild(style);
+		}`)
+	}
 
 	fmt.Println("browser started")
 }
