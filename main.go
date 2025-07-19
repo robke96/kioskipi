@@ -11,6 +11,6 @@ func main() {
 		config.NewConfig()
 	}
 
-	go browser.Start()
+	browser.Manager.Start()
 	server.Start()
 }

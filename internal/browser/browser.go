@@ -8,7 +8,13 @@ import (
 	"github.com/robke96/kioskipi/internal/config"
 )
 
-func Start() {
+type BrowserManager struct {
+	Browser *rod.Browser
+}
+
+var Manager *BrowserManager = &BrowserManager{}
+
+func (bm *BrowserManager) Start() {
 	url := config.Get().Url
 	// url := "http://localhost:8080"
 
@@ -25,7 +31,20 @@ func Start() {
 		Set("kiosk", "about:blank").
 		MustLaunch()
 
-	page := rod.New().ControlURL(u).MustConnect().NoDefaultDevice().MustPage(url)
-	page.MustWaitLoad()
+	bm.Browser = rod.New()
+	bm.Browser.ControlURL(u).MustConnect().NoDefaultDevice().MustPage(url).MustWaitLoad()
+
 	fmt.Println("browser started")
+}
+
+func (bm *BrowserManager) Restart() {
+	fmt.Println("restarting browser")
+
+	if bm.Browser != nil {
+		err := bm.Browser.Close()
+		if err != nil {
+			fmt.Printf("Error closing browser: %v\n", err)
+		}
+	}
+	bm.Start()
 }

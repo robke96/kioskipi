@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/a-h/templ"
+	"github.com/robke96/kioskipi/internal/browser"
 	"github.com/robke96/kioskipi/internal/config"
 )
 
@@ -29,5 +30,6 @@ func saveConfigHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	config.Save(&cfg)
+	browser.Manager.Restart()
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
