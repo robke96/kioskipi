@@ -2,7 +2,10 @@ module github.com/robke96/kioskipi
 
 go 1.24.4
 
-require github.com/go-rod/rod v0.116.2
+require (
+	github.com/a-h/templ v0.3.906
+	github.com/go-rod/rod v0.116.2
+)
 
 require (
 	github.com/ysmood/fetchup v0.2.3 // indirect

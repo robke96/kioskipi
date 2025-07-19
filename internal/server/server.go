@@ -4,27 +4,15 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
-	"text/template"
 
-	_ "embed"
-
+	"github.com/a-h/templ"
 	"github.com/robke96/kioskipi/internal/config"
 )
-
-//go:embed web/index.html
-var indexHTML string
-
-func homePage(w http.ResponseWriter, r *http.Request) {
-	cfg := config.Get()
-
-	tmpl := template.Must(template.New("config").Parse(indexHTML))
-	tmpl.Execute(w, cfg)
-}
 
 func Start() {
 	port := 8080
 
-	http.HandleFunc("/", homePage)
+	http.Handle("/", templ.Handler(Home()))
 	http.HandleFunc("/save", saveConfigHandler)
 
 	fmt.Println("Starting server at port ", port)

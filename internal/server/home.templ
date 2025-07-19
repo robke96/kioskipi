@@ -1,0 +1,44 @@
+package server
+
+import "github.com/robke96/kioskipi/internal/config"
+
+templ head() {
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width"/>
+        <meta name="color-scheme" content="dark">
+        <title>kioskipi</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.indigo.min.css">
+    </head>
+}
+
+templ Home() {
+    {{
+        cfg := config.Get()
+    }}
+    <!DOCTYPE html>
+    <html lang="en">
+        @head()
+        <body>
+            <main class="container">
+                <article>
+                    <h1>Configuration</h1>
+                    <form method="post" action="/save" autocomplete="off">
+                        <label>
+                            URL:
+                            <input type="url" name="url" required="required" placeholder="Url" aria-label="Url" value={cfg.Url}>
+                        </label>
+                        <div>
+                            <h2>Options</h2>
+                            <fieldset>
+                                <input type="checkbox" name="hidecursor" if cfg.HideCursor { checked }>
+                                <label htmlFor="hidecursor" >Hide Cursor</label>
+                            </fieldset>
+                        </div>
+                        <button type="submit">Save Settings</button>
+                    </form>
+                </article>
+            </main>
+        </body>
+    </html>
+}
