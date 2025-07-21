@@ -12,8 +12,10 @@
 - [x] Auto-launch web in kiosk mode
 - [x] No ROOT required
 - [x] Hide Cursor
+- [ ] Custom config port
 - [ ] Multi-page support
 - [ ] Auto-scroll
+- [ ] Auto-updates
 - [ ] Auto-restart on failure/crash
 - [ ] Show page on specific time
 - [ ] Raspberry Pi Lite support
