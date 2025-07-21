@@ -33,7 +33,7 @@ curl -fsSL https://raw.githubusercontent.com/robke96/kioskipi/master/scripts/uni
 After installation, KioskiPI runs automatically.
 To edit config, open a browser and go to:
 ```
-http://<raspberry-pi-ip>:8080
+http://<raspberry-pi-ip>:54321
 ```
 Replace ``<raspberry-pi-ip>`` with the IP address of your Raspberry Pi on the local network.
 
