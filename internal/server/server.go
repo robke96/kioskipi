@@ -11,7 +11,7 @@ import (
 )
 
 func Start() {
-	port := 8080
+	port := 54321
 
 	http.Handle("/", templ.Handler(Home()))
 	http.HandleFunc("/save", saveConfigHandler)
