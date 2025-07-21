@@ -19,7 +19,7 @@ func Path() (string, error) {
 		log.Fatal(err)
 	}
 
-	return filepath.Join(home, "kioskipi", "config.json"), nil
+	return filepath.Join(home, ".kioskipi", "config.json"), nil
 }
 
 func Exists() bool {
