@@ -3,7 +3,6 @@ package config
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 )
@@ -13,18 +12,29 @@ type Config struct {
 	HideCursor bool   `json:"hidecursor"`
 }
 
-func Path() (string, error) {
+type ProgramPath struct {
+	Base string
+}
+
+func NewPath() (*ProgramPath, error) {
 	home, err := os.UserHomeDir()
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
-	return filepath.Join(home, ".kioskipi", "config.json"), nil
+	return &ProgramPath{
+		Base: filepath.Join(home, ".kioskipi"),
+	}, nil
+}
+
+// return config file location
+func (p *ProgramPath) Config() string {
+	return filepath.Join(p.Base, "config.json")
 }
 
 func Exists() bool {
-	configFile, _ := Path()
-	_, err := os.Stat(configFile)
+	path, _ := NewPath()
+	_, err := os.Stat(path.Config())
 	if os.IsNotExist(err) {
 		return false
 	}
@@ -41,20 +51,29 @@ func NewConfig() {
 		fmt.Printf("%v\n", jsonData)
 	}
 
-	configFile, _ := Path()
-	err = os.WriteFile(configFile, jsonData, 0600)
+	path, _ := NewPath()
+
+	err = os.WriteFile(path.Config(), jsonData, 0600)
 	if err != nil {
-		panic(err)
+		fmt.Println("No folder found, trying to create one")
+		err = os.MkdirAll(path.Base, 0755)
+		if err != nil {
+			fmt.Println("Failed to create program folder")
+			return
+		}
+		fmt.Println("Successfully created folder")
+
+		NewConfig()
 	}
 }
 
 func Get() Config {
-	configPath, err := Path()
+	path, err := NewPath()
 	if err != nil {
 		panic(err)
 	}
 
-	jsonFile, err := os.ReadFile(configPath)
+	jsonFile, err := os.ReadFile(path.Config())
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -76,13 +95,13 @@ func Save(c *Config) {
 		return
 	}
 
-	path, err := Path()
+	path, err := NewPath()
 	if err != nil {
 		fmt.Println("path error: ", err)
 		return
 	}
 
-	err = os.WriteFile(path, json, 0644)
+	err = os.WriteFile(path.Config(), json, 0644)
 	if err != nil {
 		fmt.Println("path error: ", err)
 		return
