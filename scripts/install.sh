@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-DEV_MODE=true
+DEV_MODE=false
 
 PROGRAM_DIR="$HOME/.kioskipi"
 SERVICE_NAME="kioskipi"
@@ -21,16 +21,60 @@ error() {
 }
 
 info "KioskiPI Started!"
+mkdir -p $PROGRAM_DIR
+
+# === Detect architecture ===
+platform=$(uname -ms)
+github_repo="robke96/kioskipi"
+BINARY_NAME=kioskipi
+
+case "$platform" in
+  "Linux aarch64" | "Linux arm64")
+    target="linux-arm64"
+    ;;
+  "Linux x86_64")
+    target="linux-amd64"
+    ;;
+  "Linux armv7l")
+    target="linux-armv7"
+    ;;
+  *)
+    error "Unsupported platform: $platform"
+    exit 1
+    ;;
+esac
 
 if [ $DEV_MODE = true ]; then
     if ! command -v go &>/dev/null; then
         error "Missing go compiler!"
     fi
     
-    mkdir -p $PROGRAM_DIR
     go build -o $PROGRAM_DIR/kioskipi .
     chmod +x "$PROGRAM_DIR/kioskipi"
+else
     # get program from github releases
+    asset_name="${BINARY_NAME}-${target}.tar.gz"
+
+    download_url=$(curl -s "https://api.github.com/repos/${github_repo}/releases/latest" \
+    | grep "browser_download_url" \
+    | grep "$asset_name" \
+    | cut -d '"' -f 4)
+
+    if [ -z "$download_url" ]; then
+        error "Error: Failed to find download URL for $asset_name"
+        exit 1
+    fi
+
+    info "Downloading $asset_name..."
+    curl -L "$download_url" -o "$asset_name"
+
+    tar -xzf "$asset_name"
+    chmod +x "$BINARY_NAME"
+    sudo mv "$BINARY_NAME" "$PROGRAM_DIR/"
+
+    rm "$asset_name"
+
+    info "Installed $BINARY_NAME to $INSTALL_DIR"
 fi
 
 #SYSTEMD service
