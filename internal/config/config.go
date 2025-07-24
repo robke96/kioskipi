@@ -10,6 +10,7 @@ import (
 type Config struct {
 	Url        string `json:"url"`
 	HideCursor bool   `json:"hidecursor"`
+	Port       uint16 `json:"port"`
 }
 
 type ProgramPath struct {
@@ -41,12 +42,8 @@ func Exists() bool {
 	return true
 }
 
-func NewConfig() {
-	data := Config{
-		Url: "https://example.com",
-	}
-
-	jsonData, err := json.Marshal(data)
+func NewConfig(cData *Config) {
+	jsonData, err := json.Marshal(cData)
 	if err != nil {
 		fmt.Printf("%v\n", jsonData)
 	}
@@ -63,7 +60,7 @@ func NewConfig() {
 		}
 		fmt.Println("Successfully created folder")
 
-		NewConfig()
+		NewConfig(cData)
 	}
 }
 

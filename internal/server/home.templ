@@ -9,6 +9,7 @@ templ head() {
         <meta name="color-scheme" content="dark">
         <title>kioskipi</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.indigo.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm" crossorigin="anonymous"></script>
     </head>
 }
 
@@ -23,11 +24,15 @@ templ Home() {
             <main class="container">
                 <article>
                     <h1>Configuration</h1>
-                    <form method="post" action="/save" autocomplete="off">
+                    <form hx-post="/save" hx-target="#result" hx-swap="innerHTML" hx-disabled-elt="#submit-btn" autocomplete="off">
                         <label>
                             URL:
                             <input type="url" name="url" required="required" placeholder="Url" aria-label="Url" value={cfg.Url}>
                         </label>
+                        <div>
+                            <label>Configuration Port</label>
+                            <input value={cfg.Port} min={1024} max={65535} step={1} type="number" name="port" placeholder="Configuration Port" aria-label="Configuration Port">
+                        </div>
                         <div>
                             <h2>Options</h2>
                             <fieldset>
@@ -35,8 +40,9 @@ templ Home() {
                                 <label htmlFor="hidecursor" >Hide Cursor</label>
                             </fieldset>
                         </div>
-                        <button type="submit">Save Settings</button>
+                        <button type="submit" id="submit-btn">Save Settings</button>
                     </form>
+                    <div id="result"></div>
                 </article>
             </main>
         </body>

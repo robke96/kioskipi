@@ -8,7 +8,12 @@ import (
 
 func main() {
 	if !config.Exists() {
-		config.NewConfig()
+		data := &config.Config{
+			Url:  "http://example.com",
+			Port: 54321,
+		}
+
+		config.NewConfig(data)
 	}
 
 	browser.Manager.Start()
