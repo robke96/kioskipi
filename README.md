@@ -11,7 +11,7 @@
 ## Features
 - [x] Auto-launch web in kiosk mode
 - [x] No ROOT required
-- [ ] Hide Cursor
+- [x] Hide Cursor
 - [ ] Custom config port
 - [ ] Multi-page support
 - [ ] Auto-scroll
