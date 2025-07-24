@@ -21,7 +21,7 @@ func (bm *BrowserManager) Start() {
 
 	// Chrome flags
 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
-		chromedp.Flag("headless", true),
+		chromedp.Flag("headless", false),
 		chromedp.Flag("kiosk", true),
 		chromedp.Flag("app", "about:blank"),
 		chromedp.Flag("touch-events", true),
