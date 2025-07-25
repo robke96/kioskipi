@@ -3,6 +3,7 @@ package browser
 import (
 	"context"
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/chromedp/chromedp"
@@ -34,6 +35,10 @@ func (bm *BrowserManager) Start() {
 		chromedp.Flag("enable-automation", false),
 		chromedp.Flag("noerrdialogs", true),
 	)
+
+	if os.Getenv("WAYLAND_DISPLAY") != "" {
+		opts = append(opts, chromedp.Flag("ozone-platform", "wayland"))
+	}
 
 	allocatorCtx, _ := chromedp.NewExecAllocator(context.Background(), opts...)
 	ctx, cancel := chromedp.NewContext(allocatorCtx)
