@@ -18,6 +18,18 @@ type BrowserManager struct {
 var Manager *BrowserManager = &BrowserManager{}
 
 func (bm *BrowserManager) Start() {
+	// wait for display manager
+	for {
+		x11Display := os.Getenv("DISPLAY")
+		waylandDisplay := os.Getenv("WAYLAND_DISPLAY")
+
+		if x11Display != "" || waylandDisplay != "" {
+			break
+		}
+		fmt.Println("No display found, trying again..")
+		time.Sleep(2 * time.Second)
+	}
+
 	configData := config.Get()
 
 	// Chrome flags
@@ -25,7 +37,6 @@ func (bm *BrowserManager) Start() {
 		chromedp.Flag("headless", false),
 		chromedp.Flag("kiosk", true),
 		chromedp.Flag("app", "about:blank"),
-		chromedp.Flag("touch-events", true),
 		chromedp.Flag("disable-gpu", true),
 		chromedp.Flag("enable-low-end-device-mode", true),
 		chromedp.Flag("no-sandbox", true),
