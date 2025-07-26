@@ -140,6 +140,7 @@ enable_greetd_service() {
     if systemctl list-unit-files | grep -q greetd.service; then
         sudo systemctl enable greetd --force
         sudo systemctl restart greetd
+        sudo systemctl set-default graphical.target
     else
         warn "greetd service not found. Ensure it's properly installed."
     fi
