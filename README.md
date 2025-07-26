@@ -10,20 +10,24 @@
 
 ## Features
 - [x] Auto-launch web in kiosk mode
-- [x] No ROOT required
 - [x] Hide Cursor
 - [x] Custom config port
+- [x] Raspberry Pi Lite support
 - [ ] Auto-restart on failure/crash
 - [ ] Auto-scroll
 - [ ] Auto-updates
 - [ ] Multi-page support
 - [ ] Show page on specific time
-- [ ] Raspberry Pi Lite support
 
-## Installation
+## Installation (Raspberry Pi OS - Full)
 ```bash
 curl -fsSL https://raw.githubusercontent.com/robke96/kioskipi/master/scripts/install.sh | bash
 ```
+## Installation (Raspberry OS Lite) 
+```bash
+curl -fsSL https://raw.githubusercontent.com/robke96/kioskipi/master/scripts/install_lite.sh | bash
+```
+
 ## Uninstall
 ```bash
 curl -fsSL https://raw.githubusercontent.com/robke96/kioskipi/master/scripts/uninstall.sh | bash
